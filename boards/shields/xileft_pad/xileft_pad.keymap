@@ -1,0 +1,38 @@
+/*
+ * Copyright (c) 2026 Xiphelier
+ * SPDX-License-Identifier: MIT
+ *
+ * シールド側のデフォルトキーマップ。
+ *
+ * ★ このリポジトリで実際に使われるのは config/xileft_pad.keymap です。
+ *   そちらが存在する限り、このファイルの内容はビルドに反映されません。
+ *   ここはシールド定義単体でもビルドが通ることを保証するための最小構成です。
+ */
+
+#include <behaviors.dtsi>
+#include <dt-bindings/zmk/keys.h>
+#include <dt-bindings/zmk/bt.h>
+
+/ {
+    keymap {
+        compatible = "zmk,keymap";
+
+        default_layer {
+            bindings = <
+                &kp N1  &kp N2  &kp N3  &kp N4                      // row 0
+                &kp Q   &kp W   &kp E   &kp R   &kp T               // row 1
+                &kp A   &kp S   &kp D   &kp F   &kp G               // row 2
+                &kp Z   &kp X   &kp C   &kp V   &kp B               // row 3
+                &kp LCTRL &kp LALT &kp LSHFT &kp SPACE &kp ENTER    // row 4
+                &kp F1  &kp F2  &kp F3  &kp F4                      // encoder switches
+                &kp F5  &kp F6  &kp F7                              // levers
+            >;
+
+            sensor-bindings = <
+                &inc_dec_kp C_VOL_UP C_VOL_DN
+                &inc_dec_kp PG_UP PG_DN
+                &inc_dec_kp RIGHT LEFT
+            >;
+        };
+    };
+};

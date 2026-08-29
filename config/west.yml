@@ -1,0 +1,18 @@
+manifest:
+  remotes:
+    - name: zmkfirmware
+      url-base: https://github.com/zmkfirmware
+  projects:
+    - name: zmk
+      remote: zmkfirmware
+      # XIAO nRF52840 を xiao_ble//zmk として扱う新しいボード命名（Zephyr 4.1 / hwmv2）と
+      # ZMK Studio が必要なため main を追従する。
+      # 安定版タグ v0.3 は旧命名（seeeduino_xiao_ble）で、この構成では使えない。
+      #
+      # ★ 一度ビルドが通って実機の動作確認ができたら、その時点の ZMK の
+      #   コミット SHA にここを固定するのを推奨（例: revision: abc1234...）。
+      #   main のままだと ZMK 側の変更でビルドが突然壊れることがある。
+      revision: main
+      import: app/west.yml
+  self:
+    path: config

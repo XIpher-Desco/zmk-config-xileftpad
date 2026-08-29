@@ -1,0 +1,5 @@
+# Copyright (c) 2026 Xiphelier
+# SPDX-License-Identifier: MIT
+
+config SHIELD_XILEFT_PAD
+    def_bool $(shields_list_contains,xileft_pad)

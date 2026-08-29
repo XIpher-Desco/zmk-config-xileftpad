@@ -1,0 +1,10 @@
+# GitHub Actions のビルドマトリクス
+#
+# snippet と cmake-args は ZMK Studio（実機でのキーマップ編集）を有効にするためのもの。
+---
+include:
+  - board: xiao_ble//zmk
+    shield: xileft_pad
+    snippet: studio-rpc-usb-uart
+    cmake-args: -DCONFIG_ZMK_STUDIO=y
+    artifact-name: xileft_pad

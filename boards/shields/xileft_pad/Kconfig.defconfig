@@ -1,0 +1,15 @@
+# Copyright (c) 2026 Xiphelier
+# SPDX-License-Identifier: MIT
+
+if SHIELD_XILEFT_PAD
+
+# 16 文字未満。BLE / USB のデバイス名になる
+config ZMK_KEYBOARD_NAME
+    default "xileft pad"
+
+# ROT3 が P0.31（電池電圧読み取りピン）を占有しているため、
+# 電池残量レポートは使用できない。運用上も不要という判断。
+config ZMK_BATTERY_REPORTING
+    default n
+
+endif

@@ -1,0 +1,57 @@
+/*
+ * Copyright (c) 2026 Xiphelier
+ * SPDX-License-Identifier: MIT
+ *
+ * ZMK Studio 用の物理レイアウト定義。
+ * 座標は QMK 版 keyboard.json の LAYOUT からそのまま移植（単位は 1u = 100）。
+ */
+
+#include <physical_layouts.dtsi>
+
+/ {
+    physical_layout0: physical_layout_0 {
+        compatible = "zmk,physical-layout";
+        display-name = "Default";
+
+        keys  //                             w    h     x     y  rot   rx   ry
+            // row 0
+            = <&key_physical_attrs 100 100    0    0    0    0    0>
+            , <&key_physical_attrs 100 100  100    0    0    0    0>
+            , <&key_physical_attrs 100 100  200    0    0    0    0>
+            , <&key_physical_attrs 100 100  300    0    0    0    0>
+            // row 1
+            , <&key_physical_attrs 100 100    0  100    0    0    0>
+            , <&key_physical_attrs 100 100  100  100    0    0    0>
+            , <&key_physical_attrs 100 100  200  100    0    0    0>
+            , <&key_physical_attrs 100 100  300  100    0    0    0>
+            , <&key_physical_attrs 100 100  400  100    0    0    0>
+            // row 2
+            , <&key_physical_attrs 100 100    0  250    0    0    0>
+            , <&key_physical_attrs 100 100  100  200    0    0    0>
+            , <&key_physical_attrs 100 100  200  200    0    0    0>
+            , <&key_physical_attrs 100 100  300  200    0    0    0>
+            , <&key_physical_attrs 100 100  400  200    0    0    0>
+            // row 3
+            , <&key_physical_attrs 100 100    0  350    0    0    0>
+            , <&key_physical_attrs 100 100  100  300    0    0    0>
+            , <&key_physical_attrs 100 100  200  300    0    0    0>
+            , <&key_physical_attrs 100 100  300  300    0    0    0>
+            , <&key_physical_attrs 100 100  400  300    0    0    0>
+            // row 4
+            , <&key_physical_attrs 100 100    0  450    0    0    0>
+            , <&key_physical_attrs 100 100  100  400    0    0    0>
+            , <&key_physical_attrs 100 100  200  500    0    0    0>
+            , <&key_physical_attrs 100 100  300  400    0    0    0>
+            , <&key_physical_attrs 100 100  400  400    0    0    0>
+            // encoder switches
+            , <&key_physical_attrs 100 100    0  600    0    0    0>
+            , <&key_physical_attrs 100 100  100  600    0    0    0>
+            , <&key_physical_attrs 100 100  200  600    0    0    0>
+            , <&key_physical_attrs 100 100  300  600    0    0    0>
+            // levers
+            , <&key_physical_attrs 100 100    0  700    0    0    0>
+            , <&key_physical_attrs 100 100  100  700    0    0    0>
+            , <&key_physical_attrs 100 100  200  700    0    0    0>
+            ;
+    };
+};

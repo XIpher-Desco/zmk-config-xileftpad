@@ -1,0 +1,170 @@
+/*
+ * Copyright (c) 2026 Xiphelier
+ * SPDX-License-Identifier: MIT
+ *
+ * xileft pad キーマップ
+ * QMK/Vial 版 xileft_pad_v3.layout.json（実機で編集した最新状態）から移植。
+ *
+ * 移植にあたって落とした機能:
+ *   - RGB (WS2812 24 個 / VialRGB) ... ZMK の underglow は 4 エフェクトのみのため不採用
+ *   - ゲームパッド (BTN00-BTN31)  ... ZMK に HID ゲームパッド機能がないため
+ *   - OS Detection                ... 相当機能なし
+ * 上記が入っていた位置は &none にしてある。
+ *
+ * 旧 LIGHT レイヤ (index 3) は BT レイヤに変更。
+ * BASE の row 2 (&mo 3) を押している間だけ有効になる:
+ *   - BT_SEL 0-4 : 接続先プロファイルの切り替え（5 デバイスまで）
+ *   - BT_CLR     : 現在のプロファイルのペアリング情報を消去
+ *   - OUT_USB / OUT_BLE : 出力先の強制切り替え
+ */
+
+#include <behaviors.dtsi>
+#include <dt-bindings/zmk/keys.h>
+#include <dt-bindings/zmk/bt.h>
+#include <dt-bindings/zmk/outputs.h>
+#include <dt-bindings/zmk/pointing.h>
+
+/ {
+    behaviors {
+        /*
+         * QMK の LT(1, KC_MS_BTN2) 相当。
+         * 標準の &lt は tap 側が &kp 固定なので、マウスボタン版を用意する。
+         */
+        lt_mkp: layer_tap_mouse_key {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "tap-preferred";
+            tapping-term-ms = <200>;
+            bindings = <&mo>, <&mkp>;
+        };
+
+        /* エンコーダでホイールスクロールを送る */
+        inc_dec_msc: sensor_rotate_mouse_scroll {
+            compatible = "zmk,behavior-sensor-rotate-var";
+            #sensor-binding-cells = <2>;
+            bindings = <&msc>, <&msc>;
+        };
+
+        /*
+         * 未使用エンコーダ用のプレースホルダ。
+         * &none は #sensor-binding-cells を持たないため sensor-bindings には直接書けない。
+         */
+        enc_none: sensor_rotate_none {
+            compatible = "zmk,behavior-sensor-rotate";
+            #sensor-binding-cells = <0>;
+            bindings = <&none>, <&none>;
+        };
+    };
+
+    keymap {
+        compatible = "zmk,keymap";
+
+        default_layer {   // BASE
+            bindings = <
+                &kp LC(Z)       &kp GRAVE       &kp RC(RS(N))   &kp BSPC   // row 0
+                &kp J           &kp U           &kp W           &kp M           &kp LC(D)   // row 1
+                &kp U           &mo 3           &kp LC(Z)       &none           &kp Y   // row 2  (&mo 3 = 押している間 BT レイヤ)
+                &lt_mkp 1 MB2   &kp S           &kp LC(Z)       &kp RC(RS(Z))   &none   // row 3
+                &kp LC(H)       &mt LC(LALT) G  &mt LALT E      &mt LCTRL B     &mt LSHFT P   // row 4
+                &kp P           &kp Q           &kp R           &kp S   // encoder switches
+                &kp G           &kp DOT         &kp COMMA   // levers
+            >;
+
+            sensor-bindings = <
+                &inc_dec_kp EQUAL MINUS           // encoder 1
+                &inc_dec_msc SCRL_UP SCRL_DOWN    // encoder 2
+                &inc_dec_kp RBKT BSLH             // encoder 3
+            >;
+        };
+
+        lower_layer {   // LOWER  (&lt_mkp 1 MB2 で保持)
+            bindings = <
+                &studio_unlock  &none           &none           &none   // row 0
+                &none           &none           &none           &none           &none   // row 1
+                &none           &none           &none           &none           &none   // row 2
+                &none           &kp LC(X)       &kp LC(C)       &kp LC(V)       &none   // row 3
+                &none           &none           &none           &none           &none   // row 4
+                &none           &none           &none           &none   // encoder switches
+                &none           &none           &none   // levers
+            >;
+
+            sensor-bindings = <
+                &inc_dec_kp LBKT RBKT             // encoder 1
+                &inc_dec_kp SQT MINUS             // encoder 2
+                &enc_none                         // encoder 3
+            >;
+        };
+
+        upper_layer {   // UPPER  (現状ここへ遷移するキーは未割り当て)
+            bindings = <
+                &none  &none  &none  &none   // row 0
+                &none  &none  &none  &none  &none   // row 1
+                &none  &none  &none  &none  &none   // row 2
+                &none  &none  &none  &none  &none   // row 3
+                &none  &none  &none  &none  &none   // row 4
+                &none  &none  &none  &none   // encoder switches
+                &none  &none  &none   // levers
+            >;
+
+            sensor-bindings = <
+                &enc_none                         // encoder 1
+                &enc_none                         // encoder 2
+                &enc_none                         // encoder 3
+            >;
+        };
+
+        bt_layer {   // BT (旧 LIGHT レイヤ)。BASE の &mo 3 を押している間だけ有効
+            bindings = <
+                &bt BT_SEL 0    &bt BT_SEL 1    &bt BT_SEL 2    &bt BT_SEL 3   // row 0: 接続先プロファイル 1-4
+                &bt BT_SEL 4    &bt BT_CLR      &none           &out OUT_USB    &out OUT_BLE   // row 1: プロファイル5 / 現在のペアリング消去 / 出力切替
+                &none           &trans          &none           &none           &none   // row 2  (&trans = レイヤキー自身の位置)
+                &none           &none           &none           &none           &none   // row 3
+                &none           &none           &none           &none           &none   // row 4
+                &none           &none           &none           &none   // encoder switches
+                &none           &none           &none   // levers
+            >;
+
+            sensor-bindings = <
+                &enc_none                         // encoder 1
+                &enc_none                         // encoder 2
+                &enc_none                         // encoder 3
+            >;
+        };
+
+        sp1_layer {   // SP1    (未使用の予備)
+            bindings = <
+                &none  &none  &none  &none   // row 0
+                &none  &none  &none  &none  &none   // row 1
+                &none  &none  &none  &none  &none   // row 2
+                &none  &none  &none  &none  &none   // row 3
+                &none  &none  &none  &none  &none   // row 4
+                &none  &none  &none  &none   // encoder switches
+                &none  &none  &none   // levers
+            >;
+
+            sensor-bindings = <
+                &inc_dec_kp LBKT RBKT             // encoder 1
+                &inc_dec_kp SQT MINUS             // encoder 2
+                &enc_none                         // encoder 3
+            >;
+        };
+
+        sp2_layer {   // SP2    (未使用の予備)
+            bindings = <
+                &none  &none  &none  &none   // row 0
+                &none  &none  &none  &none  &none   // row 1
+                &none  &none  &none  &none  &none   // row 2
+                &none  &none  &none  &none  &none   // row 3
+                &none  &none  &none  &none  &none   // row 4
+                &none  &none  &none  &none   // encoder switches
+                &none  &none  &none   // levers
+            >;
+
+            sensor-bindings = <
+                &inc_dec_kp LBKT RBKT             // encoder 1
+                &inc_dec_kp SQT MINUS             // encoder 2
+                &enc_none                         // encoder 3
+            >;
+        };
+    };
+};
