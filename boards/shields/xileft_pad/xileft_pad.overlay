@@ -116,6 +116,22 @@
         enc2_config { triggers-per-rotation = <40>; };
         enc3_config { triggers-per-rotation = <40>; };
     };
+
+    /*
+     * 電源インジケータ ― XIAO オンボードの緑 LED (P0.30, アクティブ Low)。
+     *
+     * ext-power ドライバを転用している。挙動:
+     *   - 起動時に自動点灯（= 電源が入っていることが分かる）
+     *   - BT レイヤの &ext_power EP_TOG で消灯/再点灯できる（電池節約）
+     *   - ON/OFF 状態は保存され、再起動後も維持される
+     *   - ディープスリープ（CONFIG_ZMK_SLEEP 有効時）では自動消灯し、復帰で再点灯
+     *
+     * ノード名 EXT_POWER は設定保存のキーに使われる慣例名なので変更しないこと。
+     */
+    EXT_POWER {
+        compatible = "zmk,ext-power-generic";
+        control-gpios = <&gpio0 30 GPIO_ACTIVE_LOW>;   // 緑 LED
+    };
 };
 
 /*

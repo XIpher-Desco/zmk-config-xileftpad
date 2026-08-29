@@ -22,6 +22,7 @@
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/bt.h>
 #include <dt-bindings/zmk/outputs.h>
+#include <dt-bindings/zmk/ext_power.h>
 #include <dt-bindings/zmk/pointing.h>
 
 / {
@@ -116,7 +117,7 @@
         bt_layer {   // BT (旧 LIGHT レイヤ)。BASE の &mo 3 を押している間だけ有効
             bindings = <
                 &bt BT_SEL 0    &bt BT_SEL 1    &bt BT_SEL 2    &bt BT_SEL 3   // row 0: 接続先プロファイル 1-4
-                &bt BT_SEL 4    &bt BT_CLR      &none           &out OUT_USB    &out OUT_BLE   // row 1: プロファイル5 / 現在のペアリング消去 / 出力切替
+                &bt BT_SEL 4    &bt BT_CLR      &ext_power EP_TOG  &out OUT_USB  &out OUT_BLE   // row 1: プロファイル5 / ペアリング消去 / LED切替 / 出力切替
                 &none           &trans          &none           &none           &none   // row 2  (&trans = レイヤキー自身の位置)
                 &none           &none           &none           &none           &none   // row 3
                 &none           &none           &none           &none           &none   // row 4
