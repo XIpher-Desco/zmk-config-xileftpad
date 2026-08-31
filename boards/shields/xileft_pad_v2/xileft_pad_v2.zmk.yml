@@ -1,0 +1,9 @@
+file_format: "1"
+id: xileft_pad_v2
+name: xileft pad v2
+type: shield
+url: https://github.com/XIpher-Desco/zmk-config-xileftpad
+requires: [seeed_xiao]
+features:
+  - keys
+  - encoder

@@ -1,0 +1,6 @@
+/*
+ * xileft pad v2 のキーマップ。
+ * v1 とキーマップは完全共通なので include で一元管理する。
+ * v2 だけ変えたくなったら、この include をやめて中身を直接書くこと。
+ */
+#include "xileft_pad.keymap"

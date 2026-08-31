@@ -1,0 +1,5 @@
+/*
+ * シールド側デフォルトキーマップ。v1 と共通（マトリクスの論理配置が同一のため）。
+ * 実際に使われるのは config/xileft_pad_v2.keymap。
+ */
+#include "../xileft_pad/xileft_pad.keymap"

@@ -3,8 +3,16 @@
 # snippet と cmake-args は ZMK Studio（実機でのキーマップ編集）を有効にするためのもの。
 ---
 include:
+  # v1: 現行基板（D14-D16 にエンコーダ、電池残量なし）
   - board: xiao_ble//zmk
     shield: xileft_pad
     snippet: studio-rpc-usb-uart
     cmake-args: -DCONFIG_ZMK_STUDIO=y
     artifact-name: xileft_pad
+
+  # v2: 次回発注基板（ピン割り当て改訂版、電池残量あり）
+  - board: xiao_ble//zmk
+    shield: xileft_pad_v2
+    snippet: studio-rpc-usb-uart
+    cmake-args: -DCONFIG_ZMK_STUDIO=y
+    artifact-name: xileft_pad_v2
