@@ -67,7 +67,6 @@
                 &kp U           &mo 3           &kp LC(Z)       &none           &kp Y   // row 2  (&mo 3 = 押している間 BT レイヤ)
                 &lt_mkp 1 MB2   &kp S           &kp LC(Z)       &kp RC(RS(Z))   &none   // row 3
                 &kp LC(H)       &mt LC(LALT) G  &mt LALT E      &mt LCTRL B     &mt LSHFT P   // row 4
-                &kp P           &kp Q           &kp R           &kp S   // encoder switches
                 &kp G           &kp DOT         &kp COMMA   // levers
             >;
 
@@ -85,7 +84,6 @@
                 &none           &none           &none           &none           &none   // row 2
                 &none           &kp LC(X)       &kp LC(C)       &kp LC(V)       &none   // row 3
                 &none           &none           &none           &none           &none   // row 4
-                &none           &none           &none           &none   // encoder switches
                 &none           &none           &none   // levers
             >;
 
@@ -103,7 +101,6 @@
                 &none  &none  &none  &none  &none   // row 2
                 &none  &none  &none  &none  &none   // row 3
                 &none  &none  &none  &none  &none   // row 4
-                &none  &none  &none  &none   // encoder switches
                 &none  &none  &none   // levers
             >;
 
@@ -121,7 +118,6 @@
                 &none           &trans          &none           &none           &none   // row 2  (&trans = レイヤキー自身の位置)
                 &none           &none           &none           &none           &none   // row 3
                 &none           &none           &none           &none           &none   // row 4
-                &none           &none           &none           &none   // encoder switches
                 &none           &none           &none   // levers
             >;
 
@@ -139,7 +135,6 @@
                 &none  &none  &none  &none  &none   // row 2
                 &none  &none  &none  &none  &none   // row 3
                 &none  &none  &none  &none  &none   // row 4
-                &none  &none  &none  &none   // encoder switches
                 &none  &none  &none   // levers
             >;
 
@@ -157,7 +152,6 @@
                 &none  &none  &none  &none  &none   // row 2
                 &none  &none  &none  &none  &none   // row 3
                 &none  &none  &none  &none  &none   // row 4
-                &none  &none  &none  &none   // encoder switches
                 &none  &none  &none   // levers
             >;
 

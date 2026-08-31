@@ -7,9 +7,7 @@ if SHIELD_XILEFT_PAD
 config ZMK_KEYBOARD_NAME
     default "xileft pad"
 
-# ROT3 が P0.31（電池電圧読み取りピン）を占有しているため、
-# 電池残量レポートは使用できない。運用上も不要という判断。
-config ZMK_BATTERY_REPORTING
-    default n
+# リワークで ROT3 を P0.31 から P0.19 へ移設し、電池電圧読み取りピンを
+# 空けたため、電池残量レポートはそのまま使える（BLE 有効時に自動で ON）。
 
 endif

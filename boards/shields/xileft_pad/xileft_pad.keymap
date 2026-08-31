@@ -24,7 +24,6 @@
                 &kp A   &kp S   &kp D   &kp F   &kp G               // row 2
                 &kp Z   &kp X   &kp C   &kp V   &kp B               // row 3
                 &kp LCTRL &kp LALT &kp LSHFT &kp SPACE &kp ENTER    // row 4
-                &kp F1  &kp F2  &kp F3  &kp F4                      // encoder switches
                 &kp F5  &kp F6  &kp F7                              // levers
             >;
 

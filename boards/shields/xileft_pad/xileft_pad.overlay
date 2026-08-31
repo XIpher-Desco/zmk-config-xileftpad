@@ -2,11 +2,19 @@
  * Copyright (c) 2026 Xiphelier
  * SPDX-License-Identifier: MIT
  *
- * xileft pad ― 左手用 31 キー + ロータリーエンコーダ 3 個
+ * xileft pad ― 左手用 27 キー + ロータリーエンコーダ 3 個
  * コントローラ: Seeed XIAO nRF52840 Plus (board: xiao_ble//zmk)
  *
- * 配線は KiCad のネット名 (COL0-5 / ROW0-5 / ROT0-5) に対応。
+ * 配線は KiCad のネット名 (COL0-5 / ROW0-4 / ROT0-5) に対応。
  * D0-D10 は &xiao_d で、D11 以降は nRF52840 のポート名で直接指定する。
+ * ROW5 は回路図上のラベルのみでスイッチ実体が無いため、定義から除外している。
+ * これにより D12 (P0.19) がパターン上空いている。
+ *
+ * ★ この定義は「リワーク後の v1 基板」に対応する（カット1・ジャンパ1）:
+ *     1. カット:   ROT3 (エンコーダ2 B相) -> D16 (P0.31) のパターンを
+ *        D16 パッド付近で切断
+ *     2. ジャンパ: エンコーダ2 B相 -> D12 パッド (P0.19)
+ *   これにより P0.31 が完全に空き、電池残量レポートが機能する。
  */
 
 #include <dt-bindings/zmk/matrix_transform.h>
@@ -42,18 +50,17 @@
             , <&xiao_d 9  (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>   // ROW2  D9   P1.14
             , <&xiao_d 10 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>   // ROW3  D10  P1.15
             , <&gpio0 15  (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>   // ROW4  D11  P0.15
-            , <&gpio0 19  (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>   // ROW5  D12  P0.19
             ;
     };
 
     /*
-     * QMK 版 keyboard.json の LAYOUT と同じ並び順。
-     * 6x6 = 36 のうち 31 箇所を使用する。
+     * QMK 版 keyboard.json の LAYOUT と同じ並び順（ROW5 の4キーを除く）。
+     * 5行 x 6列 = 30 のうち 27 箇所を使用する。
      */
     default_transform: keymap_transform0 {
         compatible = "zmk,matrix-transform";
         columns = <6>;
-        rows = <6>;
+        rows = <5>;
         map = <
         //  row 0
             RC(0,0) RC(0,1) RC(0,2) RC(0,3)
@@ -65,8 +72,6 @@
             RC(3,0) RC(3,1) RC(3,2) RC(3,3) RC(3,4)
         //  row 4
             RC(4,0) RC(4,1) RC(4,2) RC(4,3) RC(4,4)
-        //  encoder switches
-            RC(5,0) RC(5,1) RC(5,2) RC(5,3)
         //  levers
             RC(0,5) RC(1,5) RC(2,5)
         >;
@@ -94,7 +99,7 @@
     encoder_2: encoder_2 {
         compatible = "alps,ec11";
         a-gpios = <&gpio0 10 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;  // ROT2  D15  P0.10 (NFC)
-        b-gpios = <&gpio0 31 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;  // ROT3  D16  P0.31 (VBAT)
+        b-gpios = <&gpio0 19 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;  // ROT3  D12  P0.19 ★ジャンパ先（D16 からカットして移設）
         steps = <80>;
         status = "okay";
     };
@@ -144,13 +149,11 @@
 };
 
 /*
- * ROT3 が P0.31 = 電池電圧読み取り用 ADC ピンを占有するため、
- * ボード定義側の電池センサを無効化する。
- * 電池自体は接続するが、残量レポートは行わない。
+ * リワークで ROT3 を P0.31 から P0.19 へ移設したため、&vbatt は無効化しない。
+ * P0.31 が空いたので電池残量レポート（BLE の電池表示）がそのまま機能する。
+ * ※ カットが不完全で P0.31 がエンコーダ線につながったままだと、
+ *    残量が常に 100% 付近や 0% 付近に張り付く。その場合はカット箇所を再確認。
  */
-&vbatt {
-    status = "disabled";
-};
 
 /*
  * xiao_ble のボード定義では i2c1 と spi2 が既定で

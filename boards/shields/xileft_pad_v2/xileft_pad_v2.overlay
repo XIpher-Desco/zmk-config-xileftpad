@@ -2,25 +2,25 @@
  * Copyright (c) 2026 Xiphelier
  * SPDX-License-Identifier: MIT
  *
- * xileft pad v2 ― 次回発注基板向けの「正しい」ピン割り当て
+ * xileft pad v2 ― 次回発注基板向けの「正しい」ピン割り当て（27 キー + エンコーダ 3 個）
  * コントローラ: Seeed XIAO nRF52840 Plus (board: xiao_ble//zmk)
  *
- * v1 からの改善:
- *   - P0.31 (D16/BAT) を使わない  -> 電池残量レポートが復活
- *   - エンコーダを全て ESD 的に安全なピンへ移動（NFC ピンから排除）
- *   - NFC ピンの使用を 1 本 (P0.09) だけに削減し、マトリクスの行（スイッチ経由）に配置
- *   - P0.10 (D15) は未使用 -> 基板では予備パッドとして引き出しておくこと
+ * v1 からの改善（妥協ゼロ構成）:
+ *   - ROW5（スイッチ実体のなかった行）を廃止 -> 必要ピンが 17 本になり、
+ *     NFC ピン (P0.09/P0.10) も電池ピン (P0.31) も一切使わない
+ *   - 電池残量レポートが標準で機能する（P0.31 を空けてあるため）
+ *   - uicr の NFC 開放設定も不要になった
  *   - シルク/回路図は D 番号ではなく P 番号 (P0.xx/P1.xx) で管理すること
  *     （Seeed の D17/D19 表記はソースによって食い違うため）
  *
  * ピン割り当て（P 番号が正、D 番号は参考）:
  *   COL0..COL5 = P0.02 P0.03 P0.28 P0.29 P0.04 P0.05   (D0..D5)
  *   ROW0..ROW4 = P1.11 P1.12 P1.13 P1.14 P1.15         (D6..D10)
- *   ROW5       = P0.09                                  (D14, NFC1)
  *   ENC1 A/B   = P0.15 / P0.19                          (D11 / D12)
  *   ENC2 A/B   = P1.01 / P1.03                          (D13 / SCK1)
  *   ENC3 A/B   = P1.05 / P1.07                          (MISO1 / MOSI1)
- *   未接続     = P0.31 (電池読み取り用に空ける), P0.10 (予備パッド)
+ *   未接続     = P0.31 (電池読み取り用に空ける),
+ *                P0.09 / P0.10 (NFC, 予備パッドとして引き出し推奨)
  */
 
 #include <dt-bindings/zmk/matrix_transform.h>
@@ -56,15 +56,14 @@
             , <&xiao_d 8  (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>   // ROW2  P1.13  (D8)
             , <&xiao_d 9  (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>   // ROW3  P1.14  (D9)
             , <&xiao_d 10 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>   // ROW4  P1.15  (D10)
-            , <&gpio0 9   (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>   // ROW5  P0.09  (D14, NFC1)
             ;
     };
 
-    /* 論理配置は v1 と同一（QMK 版 LAYOUT の並び順） */
+    /* 論理配置は v1 と同一（QMK 版 LAYOUT の並び順、ROW5 の4キーを除く 27 キー） */
     default_transform: keymap_transform0 {
         compatible = "zmk,matrix-transform";
         columns = <6>;
-        rows = <6>;
+        rows = <5>;
         map = <
         //  row 0
             RC(0,0) RC(0,1) RC(0,2) RC(0,3)
@@ -76,8 +75,6 @@
             RC(3,0) RC(3,1) RC(3,2) RC(3,3) RC(3,4)
         //  row 4
             RC(4,0) RC(4,1) RC(4,2) RC(4,3) RC(4,4)
-        //  encoder switches
-            RC(5,0) RC(5,1) RC(5,2) RC(5,3)
         //  levers
             RC(0,5) RC(1,5) RC(2,5)
         >;
@@ -129,13 +126,9 @@
     };
 };
 
-/* ROW5 が NFC 兼用ピン (P0.09) のため GPIO として開放する（UICR に一度だけ書き込み） */
-&uicr {
-    nfct-pins-as-gpios;
-};
-
 /*
- * v1 と違い &vbatt は無効化しない。
+ * v2 は NFC ピンを使わないため、uicr の nfct-pins-as-gpios 設定は不要。
+ * &vbatt も無効化しない。
  * P0.31 を基板側で空けてあるので、電池残量レポートがそのまま機能する。
  */
 
