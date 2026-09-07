@@ -5,6 +5,9 @@
 QMK/Vial 版 `xipher/xileft_pad_v3` からの移行。コントローラは RP2040-Zero から
 **Seeed XIAO nRF52840 Plus** に変更、無線（BLE）対応。
 
+> 実機を使うための手順（書き込み・Bluetooth 接続・キーマップ変更）は
+> **[docs/MANUAL.md](docs/MANUAL.md)** にまとめてある。この README は設計・開発向けの詳細。
+
 ---
 
 ## ファイル構成
