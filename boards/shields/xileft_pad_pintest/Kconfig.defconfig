@@ -1,0 +1,8 @@
+# SPDX-License-Identifier: MIT
+
+if SHIELD_XILEFT_PAD_PINTEST
+
+config ZMK_KEYBOARD_NAME
+    default "xileft pintest"
+
+endif

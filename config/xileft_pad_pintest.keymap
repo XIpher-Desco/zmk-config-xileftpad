@@ -1,0 +1,26 @@
+/*
+ * SPDX-License-Identifier: MIT
+ *
+ * 診断専用テストキーマップ。
+ * エンコーダの A/B 各線がそのまま数字キーになっている。
+ */
+
+#include <behaviors.dtsi>
+#include <dt-bindings/zmk/keys.h>
+
+/ {
+    keymap {
+        compatible = "zmk,keymap";
+
+        default_layer {
+            bindings = <
+                &kp N1   // ROT0 D13 P1.01  enc1 A
+                &kp N2   // ROT1 D14 P0.09  enc1 B
+                &kp N3   // ROT2 D15 P0.10  enc2 A
+                &kp N4   // ROT3 D12 P0.19  enc2 B
+                &kp N5   // ROT4 D17 P1.03  enc3 A
+                &kp N6   // ROT5 D18 P1.05  enc3 B
+            >;
+        };
+    };
+};
