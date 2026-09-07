@@ -1,0 +1,10 @@
+# Copyright (c) 2026 Xiphelier
+# SPDX-License-Identifier: MIT
+
+if SHIELD_XILEFT_PAD_V2_IPAD
+
+# ★ 16 文字以内（超えるとビルドが落ちる。詳細は xileft_pad の Kconfig.defconfig）
+config ZMK_KEYBOARD_NAME
+    default "xileft iPad v2"
+
+endif

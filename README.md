@@ -21,6 +21,26 @@ QMK/Vial 版 `xipher/xileft_pad_v3` からの移行。コントローラは RP20
 | `boards/shields/xileft_pad/xileft_pad-layouts.dtsi` | ZMK Studio 用の物理レイアウト（キー座標） |
 | `boards/shields/xileft_pad/xileft_pad.keymap` | シールド単体用の最小デフォルト。**通常は使われない** |
 | `build.yaml` | ビルド対象。ZMK Studio 有効 |
+| `config/xileft_pad_ipad.keymap` | iPad 版キーマップ（マウス機能なし） |
+| `config/xileft_pad_ipad.conf` | iPad 版の機能 ON/OFF（`CONFIG_ZMK_POINTING` を入れない） |
+| `boards/shields/xileft_pad_ipad/` | iPad 版シールド。overlay は通常版を include するだけ |
+
+## ビルドターゲット
+
+| シールド | 基板 | 接続先 | マウス | デバイス名 |
+| --- | --- | --- | --- | --- |
+| `xileft_pad` | v1 | PC | あり | `xileft BLE` |
+| `xileft_pad_ipad` | v1 | iPad | **なし** | `xileft iPad` |
+| `xileft_pad_v2` | v2 | PC | あり | `xileft BLE v2` |
+| `xileft_pad_v2_ipad` | v2 | iPad | **なし** | `xileft iPad v2` |
+| `xileft_pad_pintest` | v1 | 診断専用 | — | `xileft pintest` |
+
+iPad 版は `CONFIG_ZMK_POINTING` を入れず、`&mkp` / `&msc` を一切使わない。
+そのため keymap では BASE row 3 左端が `&mo 1`（レイヤ切替のみ）、
+エンコーダ2が `Ctrl` + テンキー `+/-`（クリスタのズーム）になっている。
+
+配線定義は通常版の overlay を `#include` しているだけなので、**ピン割り当ての
+修正は必ず通常版側だけを直すこと**。キーマップも v2 版は v1 版を include している。
 
 ---
 

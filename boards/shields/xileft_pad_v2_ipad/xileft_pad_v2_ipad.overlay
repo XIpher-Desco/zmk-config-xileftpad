@@ -1,0 +1,10 @@
+/*
+ * Copyright (c) 2026 Xiphelier
+ * SPDX-License-Identifier: MIT
+ *
+ * xileft pad iPad 版（v2 基板）のハードウェア定義。
+ * 配線は通常の v2 と同一なので overlay を丸ごと include する。
+ * ピン割り当ての変更は ../xileft_pad_v2/xileft_pad_v2.overlay 側で行うこと。
+ */
+
+#include "../xileft_pad_v2/xileft_pad_v2.overlay"

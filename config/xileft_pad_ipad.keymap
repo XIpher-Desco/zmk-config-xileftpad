@@ -1,0 +1,152 @@
+/*
+ * Copyright (c) 2026 Xiphelier
+ * SPDX-License-Identifier: MIT
+ *
+ * xileft pad ― iPad 版キーマップ（クリスタ用・左手キーパッド）
+ *
+ * 通常版 (xileft_pad.keymap) との違いは 2 点だけ:
+ *
+ *   1. マウス機能を持たない
+ *      iPad は HID のマウスを繋ぐとポインタが常時表示されるなど扱いが
+ *      変わるため、CONFIG_ZMK_POINTING ごと無効にしている
+ *      (config/xileft_pad_ipad.conf)。これに伴い、
+ *        - BASE row 3 左端の LT(1, MS_BTN2) 相当 -> &mo 1（レイヤ切替のみ）
+ *        - エンコーダ2のホイール -> Ctrl + テンキー +/-（クリスタのズーム）
+ *      に置き換えた。&mkp / &msc は POINTING 無効時に存在しないため、
+ *      それらを参照する behavior もこのファイルには定義していない。
+ *
+ *   2. それ以外は Vial 版 xileft_pad_v3 と同じ配列
+ *      BT レイヤへの入口 (BASE row 2 の &mo 3) だけは Vial 版に無い追加。
+ *      無線機なので、プロファイル切替とペアリング消去の手段は必須。
+ *
+ * ★ 修飾キーについて
+ *   ズームもコピペも Ctrl 修飾で書いてある。iPadOS 側の設定やアプリに
+ *   よっては Command が要求されることがある。その場合は該当箇所の
+ *   LC(...) を LG(...) に置き換えること（LG = Left GUI = Command）。
+ */
+
+#include <behaviors.dtsi>
+#include <dt-bindings/zmk/keys.h>
+#include <dt-bindings/zmk/bt.h>
+#include <dt-bindings/zmk/outputs.h>
+#include <dt-bindings/zmk/ext_power.h>
+
+/ {
+    behaviors {
+        /*
+         * 未使用エンコーダ用のプレースホルダ。
+         * &none は #sensor-binding-cells を持たないため sensor-bindings には直接書けない。
+         */
+        enc_none: sensor_rotate_none {
+            compatible = "zmk,behavior-sensor-rotate";
+            #sensor-binding-cells = <0>;
+            bindings = <&none>, <&none>;
+        };
+    };
+
+    keymap {
+        compatible = "zmk,keymap";
+
+        default_layer {   // BASE
+            bindings = <
+                &kp LC(Z)       &kp GRAVE       &kp RC(RS(N))   &kp BSPC   // row 0
+                &kp J           &kp U           &kp W           &kp M           &kp LC(D)   // row 1
+                &kp U           &mo 3           &kp LC(Z)       &none           &kp Y   // row 2  (&mo 3 = 押している間 BT レイヤ)
+                &mo 1           &kp S           &kp LC(Z)       &kp RC(RS(Z))   &none   // row 3  (通常版の LT(1,MS_BTN2) 相当。iPad 版はレイヤ切替のみ)
+                &kp LC(H)       &mt LC(LALT) G  &mt LALT E      &mt LCTRL B     &mt LSHFT P   // row 4
+                &kp G           &kp DOT         &kp COMMA   // levers
+            >;
+
+            sensor-bindings = <
+                &inc_dec_kp EQUAL MINUS                     // encoder 1
+                &inc_dec_kp LC(KP_PLUS) LC(KP_MINUS)        // encoder 2 (元ホイール。クリスタのズームイン/アウト)
+                &inc_dec_kp RBKT BSLH                       // encoder 3
+            >;
+        };
+
+        lower_layer {   // LOWER  (&mo 1 で保持)
+            bindings = <
+                &studio_unlock  &none           &none           &none   // row 0
+                &none           &none           &none           &none           &none   // row 1
+                &none           &none           &none           &none           &none   // row 2
+                &none           &kp LC(X)       &kp LC(C)       &kp LC(V)       &none   // row 3
+                &none           &none           &none           &none           &none   // row 4
+                &none           &none           &none   // levers
+            >;
+
+            sensor-bindings = <
+                &inc_dec_kp LBKT RBKT             // encoder 1
+                &inc_dec_kp SQT MINUS             // encoder 2
+                &enc_none                         // encoder 3
+            >;
+        };
+
+        upper_layer {   // UPPER  (現状ここへ遷移するキーは未割り当て)
+            bindings = <
+                &none  &none  &none  &none   // row 0
+                &none  &none  &none  &none  &none   // row 1
+                &none  &none  &none  &none  &none   // row 2
+                &none  &none  &none  &none  &none   // row 3
+                &none  &none  &none  &none  &none   // row 4
+                &none  &none  &none   // levers
+            >;
+
+            sensor-bindings = <
+                &enc_none                         // encoder 1
+                &enc_none                         // encoder 2
+                &enc_none                         // encoder 3
+            >;
+        };
+
+        bt_layer {   // BT。BASE の &mo 3 を押している間だけ有効
+            bindings = <
+                &bt BT_SEL 0    &bt BT_SEL 1    &bt BT_SEL 2    &bt BT_SEL 3   // row 0: 接続先プロファイル 1-4
+                &bt BT_SEL 4    &bt BT_CLR      &ext_power EP_TOG  &out OUT_USB  &out OUT_BLE   // row 1: プロファイル5 / ペアリング消去 / LED切替 / 出力切替
+                &none           &trans          &none           &none           &none   // row 2  (&trans = レイヤキー自身の位置)
+                &none           &none           &none           &none           &none   // row 3
+                &none           &none           &none           &none           &none   // row 4
+                &none           &none           &none   // levers
+            >;
+
+            sensor-bindings = <
+                &enc_none                         // encoder 1
+                &enc_none                         // encoder 2
+                &enc_none                         // encoder 3
+            >;
+        };
+
+        sp1_layer {   // SP1    (未使用の予備)
+            bindings = <
+                &none  &none  &none  &none   // row 0
+                &none  &none  &none  &none  &none   // row 1
+                &none  &none  &none  &none  &none   // row 2
+                &none  &none  &none  &none  &none   // row 3
+                &none  &none  &none  &none  &none   // row 4
+                &none  &none  &none   // levers
+            >;
+
+            sensor-bindings = <
+                &inc_dec_kp LBKT RBKT             // encoder 1
+                &inc_dec_kp SQT MINUS             // encoder 2
+                &enc_none                         // encoder 3
+            >;
+        };
+
+        sp2_layer {   // SP2    (未使用の予備)
+            bindings = <
+                &none  &none  &none  &none   // row 0
+                &none  &none  &none  &none  &none   // row 1
+                &none  &none  &none  &none  &none   // row 2
+                &none  &none  &none  &none  &none   // row 3
+                &none  &none  &none  &none  &none   // row 4
+                &none  &none  &none   // levers
+            >;
+
+            sensor-bindings = <
+                &inc_dec_kp LBKT RBKT             // encoder 1
+                &inc_dec_kp SQT MINUS             // encoder 2
+                &enc_none                         // encoder 3
+            >;
+        };
+    };
+};

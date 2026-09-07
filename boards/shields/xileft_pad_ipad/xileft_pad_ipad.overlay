@@ -1,0 +1,16 @@
+/*
+ * Copyright (c) 2026 Xiphelier
+ * SPDX-License-Identifier: MIT
+ *
+ * xileft pad iPad 版（v1 基板／リワーク済み）のハードウェア定義。
+ *
+ * 配線は通常版とまったく同じなので、overlay は丸ごと include して
+ * 一元管理する。iPad 版で変わるのは以下の2点だけで、どちらも
+ * overlay ではなく keymap / conf 側にある:
+ *   - CONFIG_ZMK_POINTING を無効化（マウス機能なし）  ... conf
+ *   - 右クリックとホイールの割り当て                  ... keymap
+ *
+ * ピン割り当てを直すときは必ず ../xileft_pad/xileft_pad.overlay を編集すること。
+ */
+
+#include "../xileft_pad/xileft_pad.overlay"

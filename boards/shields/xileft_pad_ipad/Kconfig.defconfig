@@ -1,0 +1,12 @@
+# Copyright (c) 2026 Xiphelier
+# SPDX-License-Identifier: MIT
+
+if SHIELD_XILEFT_PAD_IPAD
+
+# ★ 16 文字以内。BLE / USB のデバイス名になる。
+# ZMK 側に BUILD_ASSERT(DEVICE_NAME_LEN <= CONFIG_BT_DEVICE_NAME_MAX) があり、
+# 超えるとビルドが "ERROR: BLE device name is too long. Max length: 16" で落ちる。
+config ZMK_KEYBOARD_NAME
+    default "xileft iPad"
+
+endif
