@@ -5,7 +5,7 @@ if SHIELD_XILEFT_PAD_V2
 
 # 16 文字未満。BLE / USB のデバイス名になる
 config ZMK_KEYBOARD_NAME
-    default "xileft pad v2"
+    default "xileft bluetooth nRF52840 pad v2"
 
 # v2 では P0.31（電池電圧読み取りピン）を基板側で空けてあるため、
 # 電池残量レポートはそのまま使える（BLE 有効時に自動で有効化される）。

@@ -90,24 +90,24 @@
      */
     encoder_1: encoder_1 {
         compatible = "alps,ec11";
-        a-gpios = <&gpio1 1 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;   // ROT0  D13  P1.01
-        b-gpios = <&gpio0 9 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;   // ROT1  D14  P0.09 (NFC)
+        a-gpios = <&gpio0 9 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;   // ROT1  D14  P0.09 (NFC)
+        b-gpios = <&gpio1 1 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;   // ROT0  D13  P1.01
         steps = <80>;
         status = "okay";
     };
 
     encoder_2: encoder_2 {
         compatible = "alps,ec11";
-        a-gpios = <&gpio0 10 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;  // ROT2  D15  P0.10 (NFC)
-        b-gpios = <&gpio0 19 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;  // ROT3  D12  P0.19 ★ジャンパ先（D16 からカットして移設）
+        a-gpios = <&gpio0 19 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;  // ROT3  D12  P0.19 ★ジャンパ先（D16 からカットして移設）
+        b-gpios = <&gpio0 10 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;  // ROT2  D15  P0.10 (NFC)
         steps = <80>;
         status = "okay";
     };
 
     encoder_3: encoder_3 {
         compatible = "alps,ec11";
-        a-gpios = <&gpio1 3 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;   // ROT4  D17  P1.03 ★要実測
-        b-gpios = <&gpio1 5 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;   // ROT5  D18  P1.05
+        a-gpios = <&gpio1 5 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;   // ROT5  D18  P1.05
+        b-gpios = <&gpio1 3 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;   // ROT4  D17  P1.03 ★要実測
         steps = <80>;
         status = "okay";
     };
