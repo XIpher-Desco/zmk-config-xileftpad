@@ -39,11 +39,33 @@
             bindings = <&mo>, <&mkp>;
         };
 
-        /* エンコーダでホイールスクロールを送る */
+        /*
+         * エンコーダでホイールスクロールを送る。
+         *
+         * ★ tap-ms と速度値には理由がある。安易に変えないこと。
+         *
+         * &msc は "zmk,behavior-input-two-axis"、つまり「押している間ずっと
+         * 一定速度でスクロールし続ける」時間ベースの behavior であって、
+         * 1回押すと1ノッチ送るものではない。内部では 16ms (trigger-period-ms)
+         * ごとに `速度 x 0.016` を積算し、1.0 を超えたぶんだけ HID に出す。
+         * 離すと積算中の端数は捨てられる。
+         *
+         * sensor-rotate のデフォルト tap-ms は 5ms なので、最初の tick
+         * (16ms) が来る前に離してしまい、スクロールが1回も出ない。
+         * → tap-ms を 25ms にして tick をちょうど1回だけ通す。
+         *
+         * さらに既定の SCRL_UP / SCRL_DOWN は速度 10 で、1 tick あたり
+         * 10 x 0.016 = 0.16 しか積算されない（1ノッチに約7 tick = 112ms 必要）。
+         * → 速度 64 を直接渡し、64 x 0.016 = 1.02 で 1 tick = 1ノッチにする。
+         *
+         * スクロールが速すぎる/遅すぎる場合は keymap 側の MOVE_Y の値ではなく、
+         * まず overlay の triggers-per-rotation を調整すること。
+         */
         inc_dec_msc: sensor_rotate_mouse_scroll {
             compatible = "zmk,behavior-sensor-rotate-var";
             #sensor-binding-cells = <2>;
             bindings = <&msc>, <&msc>;
+            tap-ms = <25>;
         };
 
         /*
@@ -72,7 +94,7 @@
 
             sensor-bindings = <
                 &inc_dec_kp EQUAL MINUS           // encoder 1
-                &inc_dec_msc SCRL_UP SCRL_DOWN    // encoder 2
+                &inc_dec_msc MOVE_Y(64) MOVE_Y(-64)   // encoder 2 (SCRL_UP/DOWN 相当。速度は上の注記参照)
                 &inc_dec_kp RBKT BSLH             // encoder 3
             >;
         };
