@@ -3,9 +3,12 @@
 
 if SHIELD_XILEFT_PAD
 
-# 16 文字未満。BLE / USB のデバイス名になる
+# ★ 16 文字以内。BLE / USB のデバイス名になる。
+# ZMK 側に BUILD_ASSERT(DEVICE_NAME_LEN <= CONFIG_BT_DEVICE_NAME_MAX) があり、
+# 超えるとビルドが "ERROR: BLE device name is too long. Max length: 16" で落ちる。
+# （BLE のアドバタイズパケットに名前を収めるための制約）
 config ZMK_KEYBOARD_NAME
-    default "xileft bluetooth nRF52840 pad"
+    default "xileft BLE"
 
 # リワークで ROT3 を P0.31 から P0.19 へ移設し、電池電圧読み取りピンを
 # 空けたため、電池残量レポートはそのまま使える（BLE 有効時に自動で ON）。
