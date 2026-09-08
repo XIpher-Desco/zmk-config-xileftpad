@@ -119,10 +119,20 @@
         enc3_config { triggers-per-rotation = <40>; };
     };
 
-    /* 電源インジケータ ― XIAO オンボード緑 LED (P0.30)。挙動は v1 と同じ */
-    EXT_POWER {
-        compatible = "zmk,ext-power-generic";
-        control-gpios = <&gpio0 30 GPIO_ACTIVE_LOW>;
+    /*
+     * XIAO オンボードの RGB LED を zmk-rgbled-widget に渡す。
+     * 実体は xiao_ble のボード定義にある gpio-leds ノードの子:
+     *   led0 = 赤 P0.26 / led1 = 緑 P0.30 / led2 = 青 P0.06（すべてアクティブ Low）
+     * モジュールはこの3つの alias を BUILD_ASSERT で必須にしている。
+     *
+     * ※ 以前ここには EXT_POWER (zmk,ext-power-generic) で緑 LED を常時点灯させる
+     *   電源インジケータがあったが、同じ P0.30 を widget と取り合うため撤去した。
+     *   起動時の点灯は widget の電池レベル表示が担う（conf の BATTERY_BLINK_MS）。
+     */
+    aliases {
+        led-red = &led0;
+        led-green = &led1;
+        led-blue = &led2;
     };
 };
 

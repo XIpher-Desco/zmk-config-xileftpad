@@ -123,19 +123,19 @@
     };
 
     /*
-     * 電源インジケータ ― XIAO オンボードの緑 LED (P0.30, アクティブ Low)。
+     * XIAO オンボードの RGB LED を zmk-rgbled-widget に渡す。
+     * 実体は xiao_ble のボード定義にある gpio-leds ノードの子:
+     *   led0 = 赤 P0.26 / led1 = 緑 P0.30 / led2 = 青 P0.06（すべてアクティブ Low）
+     * モジュールはこの3つの alias を BUILD_ASSERT で必須にしている。
      *
-     * ext-power ドライバを転用している。挙動:
-     *   - 起動時に自動点灯（= 電源が入っていることが分かる）
-     *   - BT レイヤの &ext_power EP_TOG で消灯/再点灯できる（電池節約）
-     *   - ON/OFF 状態は保存され、再起動後も維持される
-     *   - ディープスリープ（CONFIG_ZMK_SLEEP 有効時）では自動消灯し、復帰で再点灯
-     *
-     * ノード名 EXT_POWER は設定保存のキーに使われる慣例名なので変更しないこと。
+     * ※ 以前ここには EXT_POWER (zmk,ext-power-generic) で緑 LED を常時点灯させる
+     *   電源インジケータがあったが、同じ P0.30 を widget と取り合うため撤去した。
+     *   起動時の点灯は widget の電池レベル表示が担う（conf の BATTERY_BLINK_MS）。
      */
-    EXT_POWER {
-        compatible = "zmk,ext-power-generic";
-        control-gpios = <&gpio0 30 GPIO_ACTIVE_LOW>;   // 緑 LED
+    aliases {
+        led-red = &led0;
+        led-green = &led1;
+        led-blue = &led2;
     };
 };
 

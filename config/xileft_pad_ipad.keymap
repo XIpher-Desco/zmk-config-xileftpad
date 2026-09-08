@@ -29,7 +29,13 @@
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/bt.h>
 #include <dt-bindings/zmk/outputs.h>
-#include <dt-bindings/zmk/ext_power.h>
+/*
+ * LED ステータス表示（zmk-rgbled-widget）の behavior。
+ * &ind_bat = 電池残量を色で表示 / &ind_con = 接続状態を色で表示。
+ * BT プロファイル切替時の点灯はモジュールが自動でやるので、
+ * キーマップ側に書くことはない。
+ */
+#include <behaviors/rgbled_widget.dtsi>
 
 / {
     behaviors {
@@ -101,8 +107,8 @@
         bt_layer {   // BT。BASE の &mo 3 を押している間だけ有効
             bindings = <
                 &bt BT_SEL 0    &bt BT_SEL 1    &bt BT_SEL 2    &bt BT_SEL 3   // row 0: 接続先プロファイル 1-4
-                &bt BT_SEL 4    &bt BT_CLR      &ext_power EP_TOG  &out OUT_USB  &out OUT_BLE   // row 1: プロファイル5 / ペアリング消去 / LED切替 / 出力切替
-                &none           &trans          &none           &none           &none   // row 2  (&trans = レイヤキー自身の位置)
+                &bt BT_SEL 4    &bt BT_CLR      &ind_bat        &out OUT_USB    &out OUT_BLE   // row 1: プロファイル5 / ペアリング消去 / 電池残量表示 / 出力切替
+                &ind_con        &trans          &none           &none           &none   // row 2  (&ind_con = 接続状態表示、&trans = レイヤキー自身の位置)
                 &none           &none           &none           &none           &none   // row 3
                 &none           &none           &none           &none           &none   // row 4
                 &none           &none           &none   // levers

@@ -2,6 +2,8 @@ manifest:
   remotes:
     - name: zmkfirmware
       url-base: https://github.com/zmkfirmware
+    - name: caksoylar
+      url-base: https://github.com/caksoylar
   projects:
     - name: zmk
       remote: zmkfirmware
@@ -14,5 +16,14 @@ manifest:
       #   main のままだと ZMK 側の変更でビルドが突然壊れることがある。
       revision: main
       import: app/west.yml
+    # LED ステータス表示（zmk-rgbled-widget）
+    # XIAO オンボードの RGB LED で、電池残量と BLE 接続状態を色で示す。
+    # ★ ZMK 本体とバージョンを合わせる必要がある。ZMK が main を追従して
+    #   いる間はここも main。ZMK をコミット SHA で固定するときは、
+    #   このモジュールも同時に固定すること（ビルドが壊れる原因になる）。
+    - name: zmk-rgbled-widget
+      remote: caksoylar
+      revision: main
+
   self:
     path: config
