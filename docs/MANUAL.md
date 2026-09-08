@@ -15,7 +15,6 @@
 | `xileft_pad_ipad.uf2` | v1 | **iPad** | なし |
 | `xileft_pad_v2.uf2` | v2 | PC | あり |
 | `xileft_pad_v2_ipad.uf2` | v2 | iPad | なし |
-| `xileft_pad_pintest.uf2` | v1 | 診断専用 | — |
 
 iPad 版は HID のマウスを持たない「キーボードだけ」のデバイスとして振る舞います。
 右クリックのキーはレイヤ切り替え専用になり、ホイールはクリスタのズーム

@@ -30,8 +30,3 @@ include:
     snippet: studio-rpc-usb-uart
     cmake-args: -DCONFIG_ZMK_STUDIO=y
     artifact-name: xileft_pad_v2_ipad
-
-  # 診断専用: エンコーダ 6 本を直接 GPIO キーにしたテストファーム（常用しない）
-  - board: xiao_ble//zmk
-    shield: xileft_pad_pintest
-    artifact-name: xileft_pad_pintest

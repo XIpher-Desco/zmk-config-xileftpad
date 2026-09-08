@@ -33,7 +33,6 @@ QMK/Vial 版 `xipher/xileft_pad_v3` からの移行。コントローラは RP20
 | `xileft_pad_ipad` | v1 | iPad | **なし** | `xileft iPad` |
 | `xileft_pad_v2` | v2 | PC | あり | `xileft BLE v2` |
 | `xileft_pad_v2_ipad` | v2 | iPad | **なし** | `xileft iPad v2` |
-| `xileft_pad_pintest` | v1 | 診断専用 | — | `xileft pintest` |
 
 iPad 版は `CONFIG_ZMK_POINTING` を入れず、`&mkp` / `&msc` を一切使わない。
 そのため keymap では BASE row 3 左端が `&mo 1`（レイヤ切替のみ）、
